@@ -1,0 +1,35 @@
+{
+    "name": "homesheer/laravel-assembler",
+    "description": "eloquent model or DTO assembler for Laravel",
+    "type": "library",
+    "keywords": [
+        "model",
+        "DTO",
+        "assembler"
+    ],
+    "homepage": "http://i-mars.com/laravel-assembler",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "homesheer",
+            "email": "homesheer@qq.com",
+            "homepage": "http://homesheer.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "LaravelAssembler\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LaravelAssembler\\": "tests/"
+        }
+    }
+}
