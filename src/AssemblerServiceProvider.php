@@ -14,7 +14,7 @@ class AssemblerServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/../config/assembler.php' => config_path('assembler.php'),
+            __DIR__ . '/config/assembler.php' => config_path('assembler.php'),
         ], 'config');
     }
 
@@ -25,7 +25,7 @@ class AssemblerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $configPath = __DIR__ . '/../config/assembler.php';
+        $configPath = __DIR__ . '/config/assembler.php';
         $this->mergeConfigFrom($configPath, 'assembler');
     }
 
