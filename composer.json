@@ -25,19 +25,19 @@
     },
     "autoload": {
         "psr-4": {
-            "LaravelAssembler\\": "src/"
+            "HomeSheer\\LaravelAssembler\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "LaravelAssembler\\": "tests/"
+            "HomeSheer\\LaravelAssembler\\": "tests/"
         }
     },
     "minimum-stability": "dev",
     "extra": {
         "laravel": {
             "providers": [
-                "LaravelAssembler\\AssemblerServiceProvider"
+                "HomeSheer\\LaravelAssembler\\AssemblerServiceProvider"
             ]
         }
     }

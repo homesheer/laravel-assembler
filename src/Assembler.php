@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelAssembler;
+namespace HomeSheer\LaravelAssembler;
 
 class Assembler
 {
