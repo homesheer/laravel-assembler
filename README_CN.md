@@ -1,4 +1,4 @@
-Laravel Assembler
+# Laravel Assembler
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/homesheer/laravel-assembler.svg?style=flat-square)](https://packagist.org/packages/homesheer/laravel-assembler)
 [![Total Downloads](https://img.shields.io/packagist/dt/homesheer/laravel-assembler.svg?style=flat-square)](https://packagist.org/packages/homesheer/laravel-assembler)
