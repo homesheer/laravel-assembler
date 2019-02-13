@@ -31,5 +31,6 @@
         "psr-4": {
             "LaravelAssembler\\": "tests/"
         }
-    }
+    },
+    "minimum-stability": "dev",
 }
