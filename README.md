@@ -51,17 +51,17 @@ $app->register(HomeSheer\LaravelAssembler\AssemblerServiceProvider::class);
 $assembler = new Assembler(User::find($id));
 ```
 
-2. Call the `getAssembledData'method of `Assembler' to obtain the assembled data:
+2. Call the `getAssembledData` method of `Assembler` to obtain the assembled data:
 
 ```php
 $assembledUserData = $assembler->getAssembledData();
 ```
 
-3. Add the query string `fields'to the URL and specify the fields to be acquired:
+3. Add the query string `fields' to the URL and specify the fields to be acquired:
 
 ```
-// Get `name'and `gender' field information for users with ID 1
-Http://localhost/users/1? Fields={name, gender}
+// Get name and gender field information for users with ID 1
+Http://localhost/users/1?fields={name,gender}
 ```
     
 ## Contributing
