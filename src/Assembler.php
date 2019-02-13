@@ -212,9 +212,9 @@ class Assembler
     }
 
     /**
-     * @param $assembler
+     * @param Object $assembler
      */
-    public function setAssembler(\stdClass $assembler): void
+    public function setAssembler(Object $assembler): void
     {
         $this->assembler = $assembler;
     }
@@ -240,7 +240,7 @@ class Assembler
             $assembledData = [];
 
             foreach ($this->getDtoCollection() as $key => $dto) {
-                if ($key === 0 && !$this->assembler) {
+                if ($key === 0 && !$this->assembler && !is_subclass_of($this, Assembler::class)) {
                     $this->setAssemblerOnConfig($dto);
                 }
 
@@ -250,7 +250,7 @@ class Assembler
 
             return $assembledData;
         } else {
-            if (!$this->assembler) {
+            if (!$this->assembler && !is_subclass_of($this, Assembler::class)) {
                 $this->setAssemblerOnConfig($this->getDto());
             }
 
@@ -267,7 +267,7 @@ class Assembler
         $config = $this->getConfig();
 
         if (isset($config['maps'][$dtoClassName])) {
-            $assembler = new $config['maps'][$dtoClassName];
+            $assembler = new $config['maps'][$dtoClassName]($dto);
             $this->setAssembler($assembler);
         }
     }
@@ -293,7 +293,7 @@ class Assembler
                 $data = $assembler->getDto()->{$fieldName};
             }
 
-            if (is_array($field) && isset($data)) {
+            if (is_array($field) && is_object($data)) {
                 $assembledData[$fieldName] = $this->assembleData($field, $data);
             } else {
                 $assembledData[$fieldName] = $data;
