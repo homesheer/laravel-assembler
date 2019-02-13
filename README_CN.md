@@ -1,8 +1,10 @@
 # Laravel Assembler
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/homesheer/laravel-assembler.svg?style=flat-square)](https://packagist.org/packages/homesheer/laravel-assembler)
-[![Total Downloads](https://img.shields.io/packagist/dt/homesheer/laravel-assembler.svg?style=flat-square)](https://packagist.org/packages/homesheer/laravel-assembler)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+[![For Laravel 5](https://img.shields.io/badge/laravel-5.*-green.svg)](https://github.com/laravel/laravel)
+[![For Lumen 5](https://img.shields.io/badge/lumen-5.*-green.svg)](https://github.com/laravel/lumen)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/homesheer/laravel-assembler.svg)](https://packagist.org/packages/homesheer/laravel-assembler)
+[![Total Downloads](https://img.shields.io/packagist/dt/homesheer/laravel-assembler.svg)](https://packagist.org/packages/homesheer/laravel-assembler)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 
 ## 介绍
 
