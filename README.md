@@ -57,7 +57,7 @@ $assembler = new Assembler(User::find($id));
 $assembledUserData = $assembler->getAssembledData();
 ```
 
-3. Add the query string `fields' to the URL and specify the fields to be acquired:
+3. Add the query string `fields` to the URL and specify the fields to be acquired:
 
 ```
 // Get name and gender field information for users with ID 1
