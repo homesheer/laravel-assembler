@@ -42,7 +42,7 @@ class Assembler
         $this->setFields($this->getRequestFields());
 
         if (is_iterable($dto)) {
-             $this->setDtoCollection($dto);
+            $this->setDtoCollection($dto);
         } else {
             $this->setDto($dto);
         }
@@ -264,9 +264,10 @@ class Assembler
     protected function setAssemblerOnConfig(Object $dto): void
     {
         $dtoClassName = get_class($dto);
+        $config = $this->getConfig();
 
-        if (isset($this->config['maps'][$dtoClassName])) {
-            $assembler = new ($this->getConfig()['maps'][$dtoClassName]);
+        if (isset($config['maps'][$dtoClassName])) {
+            $assembler = new $config['maps'][$dtoClassName];
             $this->setAssembler($assembler);
         }
     }
