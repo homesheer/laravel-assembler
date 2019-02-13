@@ -32,5 +32,5 @@
             "LaravelAssembler\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "dev"
 }
