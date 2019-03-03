@@ -36,9 +36,11 @@ class Assembler
      *
      * @throws \Exception
      */
-    public function __construct($dto)
+    public function __construct($dto = null)
     {
-        $this->setConfig(config('assembler'));
+        $config = require __DIR__ . '/config/assembler.php';
+
+        $this->setConfig($config);
         $this->setFields($this->getRequestFields());
 
         if (is_iterable($dto)) {
@@ -79,17 +81,23 @@ class Assembler
      */
     protected function getRequestFields(): string
     {
-        return app('request')->get($this->config['query_name'], '');
+        if (function_exists('app')) {
+            return app('request')->get($this->config['query_name'], '');
+        }
+
+        return '';
     }
 
     /**
      * @param $fields
+     *
+     * @throws \Exception
      */
     public function setFields($fields): void
     {
         if (is_array($fields)) {
             $this->fields = $fields;
-        } else {
+        } elseif (is_string($fields) && $fields !== '') {
             $this->fields = $this->parseFields($fields);
         }
     }
@@ -106,9 +114,14 @@ class Assembler
      * @param string $fields
      *
      * @return array
+     * @throws \Exception
      */
     protected function parseFields(string $fields): array
     {
+        if ($fields[0] !== '{' || $fields[mb_strlen($fields) - 1] !== '}') {
+            throw new \Exception('the fields is not wrapped in "{" and "}"');
+        }
+
         return $this->assembleFields($this->parseFieldsToWordStack($fields));
     }
 
@@ -146,12 +159,13 @@ class Assembler
     {
         $wordStack = [];
         $word = '';
-        $end = mb_strlen($fields) - 1;
+        $len = mb_strlen($fields);
+        $end = $len - 1;
 
-        for ($i = 1; $i < $end; $i++) {
+        for ($i = 1; $i < $len; $i++) {
             $char = $fields[$i];
 
-            if (empty($char)) {
+            if (empty($char) && $char !== '0') {
                 continue;
             }
 
@@ -163,12 +177,18 @@ class Assembler
                         $word = '';
                     }
 
-                    array_push($wordStack, $char);
+                    if ($i !== $end) {
+                        array_push($wordStack, $char);
+                    }
+
                     break;
 
                 case ',':
-                    array_push($wordStack, $word);
-                    $word = '';
+                    if ($word) {
+                        array_push($wordStack, $word);
+                        $word = '';
+                    }
+
                     break;
 
                 default:
@@ -273,12 +293,12 @@ class Assembler
     }
 
     /**
-     * @param array     $fields
-     * @param Assembler $assembler
+     * @param array  $fields
+     * @param Object $assembler
      *
      * @return array
      */
-    protected function assembleData(array $fields, Assembler $assembler): array
+    protected function assembleData(array $fields, Object $assembler): array
     {
         $assembledData = [];
 
