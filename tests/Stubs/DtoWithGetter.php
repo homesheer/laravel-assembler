@@ -1,7 +1,7 @@
 <?php
 
 
-namespace HomeSheer\LaravelAssembler\Test;
+namespace HomeSheer\LaravelAssembler\Test\Stubs;
 
 class DtoWithGetter
 {
@@ -38,11 +38,11 @@ class DtoWithGetter
     }
 
     /**
-     * @return Address
+     * @return AddressWithGetter
      */
-    public function getAddress(): Address
+    public function getAddress(): AddressWithGetter
     {
-        return new Address;
+        return new AddressWithGetter;
     }
 
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace HomeSheer\LaravelAssembler\Test;
+namespace HomeSheer\LaravelAssembler\Test\Stubs;
 
-class Address
+class AddressWithGetter
 {
     private $province = 'GuangDong';
 

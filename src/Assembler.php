@@ -43,7 +43,9 @@ class Assembler
         $this->setConfig($config);
         $this->setFields($this->getRequestFields());
 
-        if (is_iterable($dto)) {
+        if (is_array($dto)) {
+            $this->setDto($dto);
+        } elseif (is_iterable($dto)) {
             $this->setDtoCollection($dto);
         } else {
             $this->setDto($dto);
@@ -200,17 +202,17 @@ class Assembler
     }
 
     /**
-     * @param Object $dto
+     * @param array|Object $dto
      */
-    public function setDto(Object $dto): void
+    public function setDto($dto): void
     {
         $this->dto = $dto;
     }
 
     /**
-     * @return Object|null
+     * @return array|Object
      */
-    public function getDto(): ?Object
+    public function getDto()
     {
         return $this->dto;
     }
@@ -265,16 +267,18 @@ class Assembler
                 }
 
                 $this->setDto($dto);
-                $assembledData[] = $this->assembleData($this->fields, $this->getAssembler());
+                $assembledData[] = $this->assembleDataOfObject($this->fields, $this->getAssembler());
             }
 
             return $assembledData;
-        } else {
+        } elseif (is_object($this->getDto())) {
             if (!$this->assembler && !is_subclass_of($this, Assembler::class)) {
                 $this->setAssemblerOnConfig($this->getDto());
             }
 
-            return $this->assembleData($this->fields, $this->getAssembler());
+            return $this->assembleDataOfObject($this->fields, $this->getAssembler());
+        } else {
+            return $this->assembleDataOfArray($this->fields, $this->getDto());
         }
     }
 
@@ -298,7 +302,7 @@ class Assembler
      *
      * @return array
      */
-    protected function assembleData(array $fields, Object $assembler): array
+    protected function assembleDataOfObject(array $fields, Object $assembler): array
     {
         $assembledData = [];
 
@@ -307,14 +311,41 @@ class Assembler
 
             if (method_exists($assembler, $getter)) {
                 $data = $assembler->{$getter}();
-            } elseif (method_exists($assembler->getDto(), $getter)) {
+            } elseif (method_exists($assembler, 'getDto') && method_exists($assembler->getDto(), $getter)) {
                 $data = $assembler->getDto()->{$getter}();
-            } else {
+            } elseif (method_exists($assembler, 'getDto')) {
                 $data = $assembler->getDto()->{$fieldName};
+            } else {
+                $data = $assembler->{$fieldName};
             }
 
             if (is_array($field) && is_object($data)) {
-                $assembledData[$fieldName] = $this->assembleData($field, $data);
+                $assembledData[$fieldName] = $this->assembleDataOfObject($field, $data);
+            } else {
+                $assembledData[$fieldName] = $data;
+            }
+        }
+
+        return $assembledData;
+    }
+
+    /**
+     * @param array $fields
+     * @param array $originalArray
+     *
+     * @return array
+     */
+    protected function assembleDataOfArray(array $fields, array $originalArray): array
+    {
+        $assembledData = [];
+
+        foreach ($fields as $fieldName => $field) {
+            $data = $originalArray[$fieldName];
+
+            if (is_array($field) && is_object($data)) {
+                $assembledData[$fieldName] = $this->assembleDataOfObject($field, $data);
+            } elseif (is_array($field) && is_array($data)) {
+                $assembledData[$fieldName] = $this->assembleDataOfArray($field, $data);
             } else {
                 $assembledData[$fieldName] = $data;
             }
