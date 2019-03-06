@@ -38,7 +38,11 @@ class Assembler
      */
     public function __construct($dto = null)
     {
-        $config = require __DIR__ . '/config/assembler.php';
+        if (function_exists('config')) {
+            $config = config('assembler');
+        } else {
+            $config = require __DIR__ . '/config/assembler.php';
+        }
 
         $this->setConfig($config);
         $this->setFields($this->getRequestFields());
