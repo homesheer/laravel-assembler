@@ -45,19 +45,19 @@ $app->register(HomeSheer\LaravelAssembler\AssemblerServiceProvider::class);
 
 ## Usage
 
-1. Instantiate `Assembler` or a subclass inherited from `Assembler` and pass in `Eloquent` model or `DTO`:
+### 1. Instantiate `Assembler` or a subclass inherited from `Assembler` and pass in `Eloquent` model or `DTO`:
 
 ```php
 $assembler = new Assembler(User::find($id));
 ```
 
-2. Call the `getAssembledData` method of `Assembler` to obtain the assembled data:
+### 2. Call the `getAssembledData` method of `Assembler` to obtain the assembled data:
 
 ```php
 $assembledUserData = $assembler->getAssembledData();
 ```
 
-3. Add the query string `fields` to the URL and specify the fields to be acquired:
+### 3. Add the query string `fields` to the URL and specify the fields to be acquired:
 
 The `controller` method of request returns the `$assembledUserData` of the previous step.
 
@@ -72,7 +72,7 @@ Request API interface to specify fields in the `fields` query string
 Http://localhost/users/1?fields={name,gender}
 ```
    
-4. Attributes that do not exist in `Eloquent Model` or `DTO` can also be obtained:   
+### 4. Attributes that do not exist in `Eloquent Model` or `DTO` can also be obtained:   
 
 Simply create a new class that inherits from `Assembler` and defines the method of getting the virtual attributes
 
@@ -92,7 +92,7 @@ Then add the virtual field to the request
 http://localhost/users/1?fields={name,gender,virtualField}
 ```
 
-5. Supports three types of source data: objects with `getter` methods, objects without `getter` methods but with `public` attributes, and associative arrays:
+### 5. Supports three types of source data: objects with `getter` methods, objects without `getter` methods but with `public` attributes, and associative arrays:
 
 Objects with `getter` methods:
 
@@ -123,14 +123,14 @@ $user = [
 ];
 ```
 
-6. Priority:
+### 6. Priority:
 
 The acquired field is retrieved from high to low in the following order until the field terminates and returns `null` by default if it is not retrieved.
 - Customize the `getter` method in `Assembler`
 - The `getter` method in `Eloquent Model` or `DTO`
 - Attributes in `Eloquent Model` or `DTO`
 
-7. Nested Cascade:
+### 7. Nested Cascade:
 
 In the case of `Eloquent Model`, natural support is provided for acquiring associated model attributes, as well as customized `getter` methods or attributes to return objects or arrays.
 
