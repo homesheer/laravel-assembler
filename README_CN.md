@@ -143,6 +143,9 @@ http://localhost/users/1?fields={name,gender,address{province,city}}
 
 为了响应速度，不建议嵌套超过5层
 
+### 8. 配置：
+
+如果有自定义的`Assembler`，并且在`config/assembler.php`中的`maps`配置了对应关系，则在实例化父类`Assembler`后调用`getAssembledData`方法时自动获取到对应的自定义`Assembler`的`getter`方法
     
 ## 贡献
 

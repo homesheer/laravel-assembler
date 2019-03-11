@@ -143,7 +143,11 @@ In the case of `DTO`, you need to define your own `getter` method or attribute t
 
 If it's an associative array, it's just a multidimensional associative array.
 
-For response speed, it is not recommended to nest more than five layers
+For response speed, it is not recommended to nest more than five layers.
+
+### 8. config
+
+If a customized `Assembler` and `maps` in `config/assembler.php` configure the corresponding relationship, the corresponding `getter` method of `getAssembledData` is automatically obtained when the `getAssembler` method is called after instantiating the parent class `Assembler`.
     
 ## Contributing
 
