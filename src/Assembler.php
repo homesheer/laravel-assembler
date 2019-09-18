@@ -254,12 +254,13 @@ class Assembler
     }
 
     /**
-     * @return mixed
+     * @return array|Object
+     * @throws \Exception
      */
     public function getAssembledData()
     {
         if (!$this->getFields()) {
-            return $this->getDtoCollection() ?? $this->getDto();
+            return $this->getDtoCollection() ?: $this->getDto();
         }
 
         if ($this->getDtoCollection()) {
@@ -271,7 +272,14 @@ class Assembler
                 }
 
                 $this->setDto($dto);
-                $assembledData[] = $this->assembleDataOfObject($this->fields, $this->getAssembler());
+
+                if (is_object($dto)) {
+                    $assembledData[] = $this->assembleDataOfObject($this->fields, $this->getAssembler());
+                } elseif (is_array($dto)) {
+                    $assembledData[] = $this->assembleDataOfArray($this->fields, $dto);
+                } else {
+                    throw new \Exception('unsupported data type');
+                }
             }
 
             return $assembledData;
@@ -305,6 +313,7 @@ class Assembler
      * @param Object $assembler
      *
      * @return array
+     * @throws \Exception
      */
     protected function assembleDataOfObject(array $fields, Object $assembler): array
     {
@@ -323,8 +332,26 @@ class Assembler
                 $data = $assembler->{$fieldName};
             }
 
-            if (is_array($field) && is_object($data)) {
-                $assembledData[$fieldName] = $this->assembleDataOfObject($field, $data);
+            if (is_array($field)) {
+                if (is_object($data) && is_iterable($data)) {
+                    foreach ($data as $item) {
+                        if (is_object($item)) {
+                            $assembledData[$fieldName][] = $this->assembleDataOfObject($field, $item);
+                        } elseif (is_array($item)) {
+                            $assembledData[$fieldName][] = $this->assembleDataOfArray($field, $item);
+                        } else {
+                            throw new \Exception('unsupported data type');
+                        }
+                    }
+                } else {
+                    if (is_object($data)) {
+                        $assembledData[$fieldName] = $this->assembleDataOfObject($field, $data);
+                    } elseif (is_array($data)) {
+                        $assembledData[$fieldName] = $this->assembleDataOfArray($field, $data);
+                    } else {
+                        throw new \Exception('unsupported data type');
+                    }
+                }
             } else {
                 $assembledData[$fieldName] = $data;
             }
@@ -338,6 +365,7 @@ class Assembler
      * @param array $originalArray
      *
      * @return array
+     * @throws \Exception
      */
     protected function assembleDataOfArray(array $fields, array $originalArray): array
     {
@@ -346,10 +374,26 @@ class Assembler
         foreach ($fields as $fieldName => $field) {
             $data = $originalArray[$fieldName];
 
-            if (is_array($field) && is_object($data)) {
-                $assembledData[$fieldName] = $this->assembleDataOfObject($field, $data);
-            } elseif (is_array($field) && is_array($data)) {
-                $assembledData[$fieldName] = $this->assembleDataOfArray($field, $data);
+            if (is_array($field)) {
+                if (is_object($data) && is_iterable($data)) {
+                    foreach ($data as $item) {
+                        if (is_object($item)) {
+                            $assembledData[$fieldName][] = $this->assembleDataOfObject($field, $item);
+                        } elseif (is_array($item)) {
+                            $assembledData[$fieldName][] = $this->assembleDataOfArray($field, $item);
+                        } else {
+                            throw new \Exception('unsupported data type');
+                        }
+                    }
+                } else {
+                    if (is_object($data)) {
+                        $assembledData[$fieldName] = $this->assembleDataOfObject($field, $data);
+                    } elseif (is_array($data)) {
+                        $assembledData[$fieldName] = $this->assembleDataOfArray($field, $data);
+                    } else {
+                        throw new \Exception('unsupported data type');
+                    }
+                }
             } else {
                 $assembledData[$fieldName] = $data;
             }
